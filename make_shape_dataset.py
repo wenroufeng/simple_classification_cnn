@@ -3,20 +3,20 @@ import json
 
 
 def mkd(shape, val):
-    for i, img in enumerate(os.listdir(f'data/{shape}/left')):
+    for i, img in enumerate(os.listdir(f'data/{shape}s/left')):
         if i < 200:
-            os.system(f"cp data/{shape}/left/{img} shape_dataset/train/")
+            os.system(f"cp data/{shape}s/left/{img} shape_dataset/train/")
             ft.write(f'shape_dataset/train/{img} {val}\n')
         elif i < 250:
-            os.system(f"cp data/{shape}/left/{img} shape_dataset/val/")
+            os.system(f"cp data/{shape}s/left/{img} shape_dataset/val/")
             fv.write(f'shape_dataset/val/{img} {val}\n')
 
-    for i, img in enumerate(os.listdir(f'data/{shape}/right')):
+    for i, img in enumerate(os.listdir(f'data/{shape}s/right')):
         if i < 200:
-            os.system(f"cp data/{shape}/right/{img} shape_dataset/train/")
+            os.system(f"cp data/{shape}s/right/{img} shape_dataset/train/")
             ft.write(f'shape_dataset/train/{img} {val}\n')
         elif i < 250:
-            os.system(f"cp data/{shape}/right/{img} shape_dataset/val/")
+            os.system(f"cp data/{shape}s/right/{img} shape_dataset/val/")
             fv.write(f'shape_dataset/val/{img} {val}\n')
 
 
