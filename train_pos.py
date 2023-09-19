@@ -163,7 +163,7 @@ if __name__ == '__main__':
     # 训练的轮数
     epoch = 10
 
-    os.makedirs('pos_models/')
+    os.makedirs('pos_models/', exist_ok=True)
 
     for epoch_witch in range(1, epoch + 1):
         print("-------第 {} 轮训练开始-------".format(epoch_witch))

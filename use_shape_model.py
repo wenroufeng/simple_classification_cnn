@@ -8,12 +8,12 @@ import fiftyone as fo
 from shape_map import cls_map
 import random
 
-transform = torchvision.transforms.Compose([torchvision.transforms.Resize((300, 300)),
+transform = torchvision.transforms.Compose([torchvision.transforms.Resize((60, 60)),
                                             torchvision.transforms.ToTensor()])
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-model = torch.load("shape_models/model_10.pth", map_location=torch.device(device))
+model = torch.load("shape_models/model_7.pth", map_location=torch.device(device))
 
 v_c_map = {}
 for c in cls_map:
@@ -42,7 +42,7 @@ with torch.no_grad():
             image = Image.open(sample.filepath)
             image = image.convert('RGB')
             image = transform(image)
-            image = torch.reshape(image, (1, 3, 300, 300)).to(device)
+            image = torch.reshape(image, (1, 3, 60, 60)).to(device)
         except Exception as e:
             continue
         model.eval()

@@ -22,7 +22,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class Mydata(Dataset):
     def __init__(self, t):
-        self.ts = tt.Compose([tt.Resize((300, 300)), tt.ToTensor()])
+        self.ts = tt.Compose([tt.Resize((60, 60)), tt.ToTensor()])
         self.type_label = {
             'train': './shape_dataset/train.txt',
             'test': './shape_dataset/val.txt',
@@ -54,7 +54,7 @@ class Residual(nn.Module):
         if use_1x1conv:
             conv3 = nn.Conv2d(input_channels, num_channels,
                                    kernel_size=1, stride=strides)
-            self.preprocess.add_module('1x1conv', conv3) 
+            self.preprocess.add_module('1x1conv', conv3)
 
         self.bn1 = nn.BatchNorm2d(num_channels)
         self.bn2 = nn.BatchNorm2d(num_channels)
@@ -79,17 +79,17 @@ def resnet_block(input_channels, num_channels, num_residuals,
 
 
 def create_net():
-    b1 = nn.Sequential(nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3),
+    b1 = nn.Sequential(nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1),
                 nn.BatchNorm2d(64), nn.ReLU(),
                 nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
     b2 = nn.Sequential(*resnet_block(64, 64, 2, first_block=True))
     b3 = nn.Sequential(*resnet_block(64, 128, 2))
     b4 = nn.Sequential(*resnet_block(128, 256, 2))
-    b5 = nn.Sequential(*resnet_block(256, 512, 2))
+    # b5 = nn.Sequential(*resnet_block(256, 512, 2))
 
-    net = nn.Sequential(b1, b2, b3, b4, b5,
+    net = nn.Sequential(b1, b2, b3, b4,
                 nn.AdaptiveAvgPool2d((1, 1)),
-                nn.Flatten(), nn.Linear(512, 3))
+                nn.Flatten(), nn.Linear(256, 3))
     return net
 
 
@@ -104,7 +104,7 @@ def create_data():
     train_data_size = len(train_data)
     test_data_size = len(test_data)
 
-    return {"train_dataloader": train_dataloader, "test_dataloader": test_dataloader, 
+    return {"train_dataloader": train_dataloader, "test_dataloader": test_dataloader,
             "train_data_size": train_data_size, "test_data_size": test_data_size}
 
 
@@ -162,8 +162,7 @@ if __name__ == '__main__':
 
     # 训练的轮数
     epoch = 10
-
-    os.makedirs('shape_models/')
+    os.makedirs('shape_models', exist_ok=True)
 
     for epoch_witch in range(1, epoch + 1):
         print("-------第 {} 轮训练开始-------".format(epoch_witch))
